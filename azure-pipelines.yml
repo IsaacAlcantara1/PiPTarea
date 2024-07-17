@@ -1,0 +1,21 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '5.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- script: |
+    dotnet build CoffeeMachineSolution.sln
+  displayName: 'Build solution'
+
+- script: |
+    dotnet test CoffeeMachineSolution.sln --logger:trx
+  displayName: 'Run tests'
+
